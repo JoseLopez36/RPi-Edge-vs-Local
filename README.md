@@ -1,67 +1,104 @@
-# PiStream-DL-Offloading
+# RPi-Gimbal-Tracker
 
-**Subject:** Advanced Digital Systems And Applications  
-**Master's Project**
+**Real-time Human Tracking System with Gimbal Control**
+
+A Raspberry Pi-based system that captures video from a Siyi A8 Mini gimbal/camera, tracks humans using YOLO, automatically controls the gimbal to follow targets and streams annotated video to a PC.
 
 ## 📖 Project Overview
 
-This project implements and analyzes a closed-loop control system using video streaming and Deep Learning (DL). The system captures 1080p video on a Raspberry Pi 4B, streams it to a high-performance PC for DL processing, and returns control signals back to the Pi via MQTT.
+This project implements a closed-loop control system for automated gimbal tracking. The system:
 
-The core objective is to compare the performance metrics (latency, processing time) of running Deep Learning models on the embedded device (Edge) versus offloading the processing to a remote PC over Wi-Fi.
-
+1. **Captures** 1080p video from Siyi A8 Mini camera
+2. **Detects & Tracks** humans using YOLOv8 on Raspberry Pi
+3. **Controls** gimbal pan/tilt to automatically follow the target
+4. **Streams** annotated video to PC for monitoring
 
 ## 🛠 Hardware Components
 
-* **Embedded Device:** Raspberry Pi 4 Model B.
-    * See specifications.
-* **Sensor:** Raspberry Pi Camera Module V2 (RaspiCam).
-    * See documentation.
-* **Processing Unit:** Laptop/PC for remote decoding and inference.
-
+- **Embedded Device:** Raspberry Pi 4 Model B
+- **Camera/Gimbal:** Siyi A8 Mini (1080p gimbal camera)
+- **Display:** PC/Laptop for video monitoring
 
 ## ⚙️ Technologies
 
-* **Video Streaming:** GStreamer (H.264 encoding at 1080p@30fps).
-* **Communication:** MQTT Protocol (for control signals, e.g., topic `/control/move`).
-* **Deep Learning:** Framework TBD (e.g., TensorFlow/PyTorch) for video analysis.
-* **Network:** Wi-Fi.
+- **Object Detection:** YOLO11n
+- **Tracking:** YOLO built-in tracker
+- **Video Streaming:** GStreamer (H.264 encoding at 1080p@30fps)
+- **Gimbal Control:** IP communication (Siyi protocol)
+- **Network:** Ethernet for Gimbal-RPi communication, Wi-Fi for RPi-PC communication
 
-## 🚀 Workflow Architecture
-
-1.  **Capture & Encode:** The RaspiCam records video at 1080p@30fps. The RPi 4B uses hardware acceleration to encode the stream into H.264 using GStreamer.
-2.  **Transmission:** The encoded video is streamed over Wi-Fi to the PC.
-3.  **Decode & Process:** The PC receives the stream, decodes it, and applies a Deep Learning model to analyze the content.
-4.  **Control Loop:** Based on the DL inference result, the PC publishes a control signal via MQTT.
-5.  **Action:** The RPi receives the signal and performs a specific hardware action (e.g., activating a GPIO pin).
-
-## 📊 Comparative Study
-
-A major component of this project is the analysis of computational cost and network overhead. We will benchmark:
-
-* **Scenario A (Remote):** Streaming + PC Inference + Network Latency.
-* **Scenario B (Embedded):** Local Inference directly on the RPi 4B.
-
-Metrics to be measured include Wi-Fi latencies and specific processing times on the RPi.
-
-### Directory Structure
-* **`rpi_edge/`**: Code to run on the Raspberry Pi (Video Capture, Encoding, GPIO Control).
-* **`pc_server/`**: Code to run on the PC (Video Decoding, DL Inference, Control Logic).
-* **`results/`**: Benchmark logs and data.
-* **`models/`**: Deep Learning models.
+## 🚀 Quick Start
 
 ### Prerequisites
-* **Raspberry Pi:** GStreamer, Python 3, MQTT Client.
-* **PC:** GStreamer, Python 3, Deep Learning Framework, MQTT Broker (e.g., Mosquitto).
+
+- Raspberry Pi 4B with Raspberry Pi OS
+- Siyi A8 Mini gimbal/camera
+- PC with Linux/Windows (tested on Ubuntu 24.04)
+- Wi-Fi connection between RPi and PC
 
 ### Setup
 
 #### Raspberry Pi (Edge)
-1. Navigate to `rpi_edge/`.
-2. Follow the `README.md` inside for installation.
+
+1. **Install System Dependencies:**
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y python3-pip python3-venv
+   sudo apt-get install libgstreamer1.0-dev \
+     libgstreamer-plugins-base1.0-dev \
+     gstreamer1.0-plugins-good \
+     gstreamer1.0-plugins-ugly \
+     gstreamer1.0-plugins-bad \
+     gstreamer1.0-tools
+   ```
+
+2. **Create and Run Virtual Environment:**
+   ```bash
+   cd scripts/rpi
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install Python Dependencies:**
+   ```bash
+   TODO
+   ```
+
+4. **Run:**
+   ```bash
+   python3 main.py
+   ```
 
 #### PC (Server)
-1. Navigate to `pc_server/`.
-2. Follow the `README.md` inside for installation.
 
-## 📝 License
-[Insert License Here]
+1. **Install System Dependencies:**
+   ```bash
+   sudo apt-get update
+   sudo apt-get install -y python3-pip python3-venv
+   sudo apt-get install python3-gi python3-gi-cairo \
+     gir1.2-gtk-3.0 libgirepository1.0-dev
+   sudo apt-get install libgstreamer1.0-dev \
+     libgstreamer-plugins-base1.0-dev \
+     gstreamer1.0-plugins-good \
+     gstreamer1.0-plugins-ugly \
+     gstreamer1.0-plugins-bad \
+     gstreamer1.0-tools \
+     gstreamer1.0-libav
+   ```
+
+2. **Create and Run Virtual Environment:**
+   ```bash
+   cd scripts/pc
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. **Install Python Dependencies:**
+   ```bash
+   TODO
+   ```
+
+4. **Run:**
+   ```bash
+   python3 main.py
+   ```

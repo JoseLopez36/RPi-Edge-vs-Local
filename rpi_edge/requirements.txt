@@ -1,8 +1,0 @@
-# MQTT dependencies
-paho-mqtt
-# GPIO dependencies
-gpiozero
-# GStreamer dependencies
-PyGObject
-# Other dependencies
-numpy

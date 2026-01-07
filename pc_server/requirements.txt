@@ -1,9 +1,0 @@
-# MQTT dependencies
-paho-mqtt
-# Vision dependencies
-opencv-python
-# GStreamer dependencies
-PyGObject
-# Other dependencies
-numpy
-
