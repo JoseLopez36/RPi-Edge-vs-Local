@@ -1,43 +1,54 @@
+"""
+Raspberry Pi - Main Entry Point
+
+This module orchestrates:
+1. Human detection and tracking using YOLO11n
+2. Gimbal control to follow targets
+3. Annotated video streaming to PC
+"""
+
 import time
 import sys
+from yolo_tracker import YoloTracker
+from gimbal_controller import GimbalController
 from video_streamer import VideoStreamer
 
 # Configuration
-MQTT_BROKER = "broker.hivemq.com"
-MQTT_TOPIC = "/control/action"
-PC_HOST = "192.168.2.28" # Replace with PC IP
+GIMBAL_IP = "192.168.144.25"  # Replace with Siyi A8 Mini IP
+PC_HOST = "192.168.2.28"  # Replace with PC IP
 PC_PORT = 5000
-
-def on_control_message(payload):
-    """Callback when a message is received from MQTT"""
-    print(f"Control message received: {payload}")
-    # TODO: Parse payload and trigger GPIO action
-    # gpio_handler.perform_action(payload)
+MODEL_PATH = "models/yolo11n.pt"  # Path to YOLO11n model (relative to project root)
 
 def main():
-    print("RPi Edge Node Started")
+    print("RPi Gimbal Tracker Started")
     
     # Initialize Modules
-    mqtt_sub = MQTTSubscriber(MQTT_BROKER, MQTT_TOPIC, on_control_message)
+    print("Initializing YOLO tracker...")
+    tracker = YoloTracker(model_path=MODEL_PATH, conf_threshold=0.5)
+    
+    print("Initializing gimbal controller...")
+    gimbal = GimbalController(gimbal_ip=GIMBAL_IP)
+    gimbal.connect()
+    
+    print("Initializing video streamer...")
     streamer = VideoStreamer()
-    gpio = GPIOHandler()
     
     try:
-        # Start Services
-        mqtt_sub.start()
-        streamer.start_stream(PC_HOST, PC_PORT)
-        
+        # TODO: Main logic
+
         # Keep main thread alive
+        print("System running. Press Ctrl+C to stop")
         while True:
             time.sleep(1)
             
     except KeyboardInterrupt:
-        print("Stopping services...")
-        mqtt_sub.stop()
+        print("\nStopping services...")
+
+    finally:
         streamer.stop_stream()
-        gpio.cleanup()
+        gimbal.disconnect()
+        print("Shutdown complete")
         sys.exit(0)
 
 if __name__ == "__main__":
     main()
-

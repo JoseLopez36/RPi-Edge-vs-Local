@@ -61,10 +61,21 @@ This project implements a closed-loop control system for automated gimbal tracki
 
 3. **Install Python Dependencies:**
    ```bash
-   TODO
+   pip install ultralytics[export]
    ```
 
-4. **Run:**
+4. **Reboot:**
+   ```bash
+   sudo reboot
+   ```
+
+5. **Setup:**
+   ```bash
+   source venv/bin/activate
+   python3 setup.py
+   ```
+
+6. **Run:**
    ```bash
    python3 main.py
    ```
