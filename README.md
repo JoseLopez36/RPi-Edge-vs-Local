@@ -85,16 +85,12 @@ This project implements a closed-loop control system for automated gimbal tracki
 1. **Install System Dependencies:**
    ```bash
    sudo apt-get update
-   sudo apt-get install -y python3-pip python3-venv
-   sudo apt-get install python3-gi python3-gi-cairo \
-     gir1.2-gtk-3.0 libgirepository1.0-dev
    sudo apt-get install libgstreamer1.0-dev \
      libgstreamer-plugins-base1.0-dev \
      gstreamer1.0-plugins-good \
      gstreamer1.0-plugins-ugly \
      gstreamer1.0-plugins-bad \
-     gstreamer1.0-tools \
-     gstreamer1.0-libav
+     gstreamer1.0-tools
    ```
 
 2. **Create and Run Virtual Environment:**
