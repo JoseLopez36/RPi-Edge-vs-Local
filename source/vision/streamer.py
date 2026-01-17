@@ -133,3 +133,6 @@ class Streamer:
             self._thread = None
         
         self._cleanup()
+
+    def get_url(self):
+        return f"tcp://{self.host}:{self.port}"
