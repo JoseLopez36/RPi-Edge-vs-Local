@@ -43,7 +43,8 @@ def main():
         tracker = Tracker(
             model_path=tracker_cfg.get("model_path", "models/yolo11n.pt"),
             source=streamer.get_url(),
-            conf_threshold=tracker_cfg.get("conf_threshold", 0.5)
+            conf_threshold=tracker_cfg.get("conf_threshold", 0.5),
+            imgsz=tracker_cfg.get("imgsz", 320)
         )
         results = tracker.start()
 

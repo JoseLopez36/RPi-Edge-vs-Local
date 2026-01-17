@@ -9,10 +9,11 @@ import os
 from ultralytics import YOLO
 
 class Tracker:
-    def __init__(self, model_path, source, conf_threshold=0.5):
+    def __init__(self, model_path, source, conf_threshold=0.5, imgsz=320):
         self.model_path = model_path
         self.source = source
         self.conf_threshold = conf_threshold
+        self.imgsz = imgsz
         self._model = None
         print(f"Initializing YOLO Tracker (model: {model_path})")
         self._load_model()
@@ -46,7 +47,7 @@ class Tracker:
             conf=self.conf_threshold,
             classes=[0],
             stream=True,
-            imgsz=640,
+            imgsz=self.imgsz,
             persist=True
         )
         

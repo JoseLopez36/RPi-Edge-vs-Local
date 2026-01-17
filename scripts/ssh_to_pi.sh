@@ -16,4 +16,4 @@ fi
 
 # SSH connection with bash shell using password
 echo "Connecting to $USERNAME@$HOSTNAME..."
-sshpass -p "$PASSWORD" ssh "$USERNAME@$HOSTNAME" "/bin/bash" "-i"
+sshpass -p "$PASSWORD" ssh "$USERNAME@$HOSTNAME"
