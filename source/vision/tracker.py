@@ -46,6 +46,7 @@ class Tracker:
             conf=self.conf_threshold,
             classes=[0],
             stream=True,
+            imgsz=640,
             persist=True
         )
         
