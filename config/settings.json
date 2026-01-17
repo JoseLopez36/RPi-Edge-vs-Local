@@ -1,0 +1,25 @@
+{
+  "stream": {
+    "width": 1920,
+    "height": 1080,
+    "framerate": 30,
+    "port": 8000
+  },
+  "tracker": {
+    "model_path": "models/yolo11n.pt",
+    "conf_threshold": 0.5
+  },
+  "ptz": {
+    "zoom_min": 1.0,
+    "zoom_max": 3.0,
+    "zoom_step": 0.1
+  },
+  "sense_hat": {
+    "enabled": true
+  },
+  "telemetry": {
+    "overlay": true,
+    "show_fps": true,
+    "show_temp": true
+  }
+}

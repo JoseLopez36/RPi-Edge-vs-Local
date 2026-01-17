@@ -17,12 +17,18 @@ This project implements a smart surveillance system on a Raspberry Pi 4. It uses
 ## 🛠️ Hardware & Requirements
 
 * **Platform:** Raspberry Pi 4 Model B.
+  * [Product Page](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/)
+  * [Specifications](https://www.raspberrypi.com/products/raspberry-pi-4-model-b/specifications/)
+  * [Getting Started Guide](https://www.raspberrypi.com/documentation/computers/getting-started.html)
 * **Sensor:** Raspberry Pi Camera Module v2.
+  * [Product Page](https://www.raspberrypi.com/products/camera-module-v2/)
+  * [Documentation](https://www.raspberrypi.com/documentation/accessories/camera.html)
 * **I/O:** Raspberry Pi Sense HAT.
 * **Software Stack:**
 * Python 3.12+
 * GStreamer
 * Ultralytics (YOLO)
+  * [YOLO on Raspberry Pi Guide](https://docs.ultralytics.com/guides/raspberry-pi/#flash-raspberry-pi-os-to-raspberry-pi)
 
 ## ⚙️ Architecture
 
@@ -58,18 +64,15 @@ sudo apt install python3-opencv gstreamer1.0-tools libgstreamer1.0-dev libgstrea
 pip install -r requirements.txt
 ```
 
-### PC Setup (for Video Viewer)
+### Web Viewer Setup
 
-1. **Install GStreamer:**
-```bash
-sudo apt update
-sudo apt install gstreamer1.0-tools libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly
+The video stream from the Raspberry Pi can be viewed through a web browser. Once the main application is running on the Raspberry Pi, access the stream at:
+
+```
+http://<RPi_IP_ADDRESS>:8000
 ```
 
-2. **Install PyQt6:**
-```bash
-pip install PyQt6
-```
+For example: `http://192.168.1.112:8000`
 
 ## ⚙️ Configuration
 
@@ -85,13 +88,15 @@ Run the main application on the Raspberry Pi:
 python3 source/rpi/main.py
 ```
 
-### PC Viewer
+### Web Viewer
 
-Run the PC video viewer to display the stream from the Raspberry Pi:
+Access the video stream from any device with a web browser by navigating to:
 
-```bash
-python3 source/pc/main.py
 ```
+http://<RPi_IP_ADDRESS>:8000
+```
+
+For example: `http://192.168.1.112:8000`
 
 ### Controls (Sense HAT Joystick)
 
