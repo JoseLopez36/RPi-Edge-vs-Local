@@ -66,7 +66,7 @@ sudo apt install python3-picamera2
 
 3. **Install Python requirements:**
 ```bash
-pip install -r requirements.txt
+pip install -r source/rpi/requirements.txt
 ```
 
 ### Remote PC Setup
@@ -77,12 +77,18 @@ git clone https://github.com/JoseLopez36/RPi-Virtual-PTZ.git
 cd RPi-Virtual-PTZ
 ```
 
-2. **Install Python requirements:**
+2. **Create and activate a virtual environment:**
 ```bash
-pip install -r requirements.txt
+python3 -m venv venv
+source venv/bin/activate
 ```
 
-3. **Configure MQTT broker:** Ensure an MQTT broker is accessible on your network (e.g., Mosquitto). Update the broker address in `config/settings.json`.
+3. **Install Python requirements:**
+```bash
+pip install -r source/pc/requirements.txt
+```
+
+4. **Configure MQTT broker:** Ensure an MQTT broker is accessible on your network (e.g., Mosquitto). Update the broker address in `config/settings.json`.
 
 ## ⚙️ Configuration
 
