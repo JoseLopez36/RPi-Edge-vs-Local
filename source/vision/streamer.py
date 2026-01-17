@@ -21,12 +21,14 @@ class Streamer:
         width=1280,
         height=720,
         bitrate=1000000,
+        framerate=30,
     ):
         self.host = host
         self.port = port
         self.width = width
         self.height = height
         self.bitrate = bitrate
+        self.framerate = framerate
 
         self.picam2 = None
         self.encoder = None
@@ -42,13 +44,22 @@ class Streamer:
         try:
             self.picam2 = Picamera2()
             video_config = self.picam2.create_video_configuration(
-                {"size": (self.width, self.height)}
+                {"size": (self.width, self.height)},
+                controls={"FrameRate": self.framerate}
             )
             self.picam2.configure(video_config)
+            
+            # Create H.264 encoder
+            # Note: picamera2's H264Encoder uses hardware encoding which is already optimized for low latency
             self.encoder = H264Encoder(self.bitrate)
+            self.encoder.outputframerate = self.framerate
 
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+            # Enable TCP_NODELAY to disable Nagle's algorithm (reduces latency)
+            self.sock.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            # Reduce socket buffer sizes for lower latency
+            self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 65536)  # 64KB send buffer
             self.sock.bind((self.host, self.port))
             self.sock.listen()
             self.picam2.encoders = self.encoder
@@ -57,7 +68,13 @@ class Streamer:
             self.conn, _ = self.sock.accept()
             print("Client connected")
             
-            self.stream = self.conn.makefile("wb")
+            # Enable TCP_NODELAY on the connection socket as well
+            self.conn.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+            # Reduce receive buffer on connection
+            self.conn.setsockopt(socket.SOL_SOCKET, socket.SO_RCVBUF, 65536)  # 64KB receive buffer
+            
+            # Use unbuffered binary mode for lower latency
+            self.stream = self.conn.makefile("wb", buffering=0)
             self.encoder.output = FileOutput(self.stream)
 
             self.picam2.start_encoder(self.encoder)

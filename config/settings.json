@@ -1,9 +1,10 @@
 {
   "streamer": {
     "port": 10001,
-    "width": 1920,
-    "height": 1080,
-    "bitrate": 1000000
+    "width": 1280,
+    "height": 720,
+    "bitrate": 1000000,
+    "framerate": 30
   },
   "tracker": {
     "model_path": "models/yolo11n.pt",
