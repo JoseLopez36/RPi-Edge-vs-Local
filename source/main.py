@@ -2,7 +2,6 @@ import json
 import sys
 import time
 from pathlib import Path
-import matplotlib.pyplot as plt
 
 from vision.streamer import Streamer
 from vision.tracker import Tracker
@@ -29,7 +28,7 @@ def main():
     settings = load_settings()
 
     streamer = None
-    # tracker = None
+    tracker = None
     # radar = None
     # joystick = None
     # pipeline = None
@@ -53,6 +52,7 @@ def main():
             conf_threshold=tracker_cfg.get("conf_threshold", 0.5)
         )
         tracker_results = tracker.start()
+        tracker_results.show()
 
         # sense_cfg = settings.get("sense_hat", {})
         # radar = VisualRadar(enabled=sense_cfg.get("enabled", True))
@@ -69,36 +69,9 @@ def main():
         # )
     except Exception as e:
         print(f"Startup failed: {e}")
-        return
 
     try:
-        print("Collecting tracker data (100 frames)... Press Ctrl+C to stop early")
-        frame_numbers = []
-        detection_counts = []
-        
-        for frame_num, result in enumerate(tracker_results):
-            if frame_num >= 100:  # Collect 100 frames
-                break
-            
-            targets = tracker.results_to_target_list(result)
-            frame_numbers.append(frame_num)
-            detection_counts.append(len(targets))
-            
-            if frame_num % 10 == 0:
-                print(f"Frame {frame_num}: {len(targets)} detections")
-        
-        # Plot results
-        print(f"\nPlotting results for {len(frame_numbers)} frames...")
-        plt.figure(figsize=(10, 6))
-        plt.plot(frame_numbers, detection_counts, 'b-', marker='o', markersize=4)
-        plt.xlabel('Frame Number')
-        plt.ylabel('Number of Tracked Objects')
-        plt.title('Tracker Results - Detections per Frame')
-        plt.grid(True, alpha=0.3)
-        plt.tight_layout()
-        plt.show()
-        
-        print("Plot displayed. System will continue running...")
+        print("System running. Press Ctrl+C to stop")
         # Keep main thread alive
         while True:
             time.sleep(1)
