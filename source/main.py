@@ -52,7 +52,6 @@ def main():
             conf_threshold=tracker_cfg.get("conf_threshold", 0.5)
         )
         tracker_results = tracker.start()
-        tracker_results.show()
 
         # sense_cfg = settings.get("sense_hat", {})
         # radar = VisualRadar(enabled=sense_cfg.get("enabled", True))
@@ -69,12 +68,13 @@ def main():
         # )
     except Exception as e:
         print(f"Startup failed: {e}")
+        raise
 
     try:
         print("System running. Press Ctrl+C to stop")
-        # Keep main thread alive
-        while True:
-            time.sleep(1)
+        # Process tracker results (generator yields Results objects)
+        for result in tracker_results:
+            result.show()
     except KeyboardInterrupt:
         print("\nStopping services...")
     finally:

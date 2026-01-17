@@ -1,2 +1,2 @@
 numpy>=1.26.4,<2.7.0
-ultralytics[export]>=8.0.0
+ultralytics>=8.0.0
