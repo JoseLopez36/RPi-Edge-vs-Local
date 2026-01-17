@@ -5,14 +5,14 @@ import os
 # Add project root to sys.path to ensure imports work if run from root
 sys.path.append(os.getcwd())
 
-from source.rpi.utils import load_config
-from source.rpi.mqtt_client import MQTTClient
-from source.rpi.camera_stream import CameraStream
-from source.rpi.ptz_logic import PTZController
-from source.rpi.sense_hat_interface import SenseHatInterface
+from utils import load_config
+from mqtt_client import MQTTClient
+from camera_stream import CameraStream
+from ptz_logic import PTZController
+from sense_hat_interface import SenseHatInterface
 
 def main():
-    print("Starting RPi Virtual PTZ System...")
+    print("Starting RPi Virtual PTZ system...")
     
     config = load_config()
     if not config:
